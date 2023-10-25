@@ -3,12 +3,12 @@ from typing import Annotated
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-from models import VehicleType, ReportType
-from schemas import UserBase, UserCreate, User, NeighborhoodBase, NeighborhoodCreate, Neighborhood, GasStationBase, GasStationCreate, GasStation, GasSuplyBase, GasSuplyCreate, GasSuply, UserReportsBase, UserReportsCreate, UserReports
-import models, seeds
-from routers import user
+import models, seeds, schemas, utils, oauth2
+from routers import user, auth
+from  dependencies import get_db
 
 app = FastAPI()
+
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -25,13 +25,6 @@ app.add_middleware(
 # Seed the database
 with SessionLocal() as db:
     seeds.seed_db(db)
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
         
 db_dependency = Annotated[Session, Depends(get_db)]
 

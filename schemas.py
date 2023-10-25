@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from models import VehicleType, ReportType
 from typing import Optional
+from datetime import datetime
 
 # User Models
 class UserBase(BaseModel):
@@ -14,7 +15,15 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes  = True
+        
+class UserOut(BaseModel):
+    id: int
+    email: EmailStr
+    created_at: datetime
+
+    class Config:
+        from_attributes  = True
 
 
 # Neighborhood Models
@@ -29,7 +38,7 @@ class NeighborhoodCreate(NeighborhoodBase):
 class Neighborhood(NeighborhoodBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 
 # GasStation Models
@@ -45,7 +54,7 @@ class GasStationCreate(GasStationBase):
 class GasStation(GasStationBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 
 # GasSuply Models
@@ -58,7 +67,7 @@ class GasSuplyCreate(GasSuplyBase):
 class GasSuply(GasSuplyBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 
 # UserReports Models
@@ -75,7 +84,7 @@ class UserReportsCreate(UserReportsBase):
 class UserReports(UserReportsBase):
     id: int
     class Config:
-        orm_mode = True
+        from_attributes  = True
 
 class Token(BaseModel):
     access_token: str
