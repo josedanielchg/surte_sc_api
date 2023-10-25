@@ -1,16 +1,26 @@
 from fastapi import FastAPI, HTTPException, Depends, status
-from pydantic import BaseModel
 from typing import Annotated
 from database import engine, SessionLocal
 from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
 from models import VehicleType, ReportType
 from schemas import UserBase, UserCreate, User, NeighborhoodBase, NeighborhoodCreate, Neighborhood, GasStationBase, GasStationCreate, GasStation, GasSuplyBase, GasSuplyCreate, GasSuply, UserReportsBase, UserReportsCreate, UserReports
-import models
-import seeds
+import models, seeds
+from routers import user
 
 app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Seed the database
 with SessionLocal() as db:
@@ -25,9 +35,5 @@ def get_db():
         
 db_dependency = Annotated[Session, Depends(get_db)]
 
-
-@app.post("/users/", status_code=status.HTTP_201_CREATED)
-async def create_user(user: UserBase, db: db_dependency):
-    db_user = models.User(**user.dict())
-    db.add(db_user)
-    db.commit()
+app.include_router(user.router)
+app.include_router(auth.router)

@@ -1,5 +1,6 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from models import VehicleType, ReportType
+from typing import Optional
 
 # User Models
 class UserBase(BaseModel):
@@ -7,7 +8,8 @@ class UserBase(BaseModel):
     password: str
 
 class UserCreate(UserBase):
-    pass
+    email: EmailStr
+    password: str
 
 class User(UserBase):
     id: int
@@ -74,3 +76,10 @@ class UserReports(UserReportsBase):
     id: int
     class Config:
         orm_mode = True
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenData(BaseModel):
+    id: Optional[str] = None
