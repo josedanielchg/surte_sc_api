@@ -15,3 +15,10 @@ def seed_db(db: Session):
         # ...
         
         db.commit()
+    
+    if db.query(models.GasStation).count() == 0:
+        # Seeding Users
+        user1 = models.User(email="john.doe@example.com", password="securepassword")
+        
+        db.add(user1)
+        db.commit()
