@@ -4,7 +4,7 @@ from database import engine, SessionLocal
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 import models, seeds, schemas, utils, oauth2
-from routers import user, auth
+from routers import user, auth, user_reports 
 from  dependencies import get_db
 
 app = FastAPI()
@@ -30,3 +30,4 @@ db_dependency = Annotated[Session, Depends(get_db)]
 
 app.include_router(user.router)
 app.include_router(auth.router)
+app.include_router(user_reports.router)
