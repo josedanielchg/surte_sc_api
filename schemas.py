@@ -6,7 +6,6 @@ from datetime import datetime
 # User Models
 class UserBase(BaseModel):
     email: str
-    username: str
     password: str
 
 class UserCreate(UserBase):
@@ -53,10 +52,7 @@ class GasStationBase(BaseModel):
 class GasStationCreate(GasStationBase):
     pass
 
-class GasStation(GasStationBase):
-    id: int
-    class Config:
-        from_attributes  = True
+
 
 
 # GasSuply Models
@@ -79,6 +75,13 @@ class UserReportsBase(BaseModel):
     type: ReportType
     user_id: int
     gas_stations_id: int
+
+class GasStation(GasStationBase):
+    id: int
+    neighborhood: Neighborhood  # Asegúrate de tener un esquema para Neighborhood
+    latest_report: UserReportsBase
+    class Config:
+        from_attributes = True
 
 class UserReportsCreate(UserReportsBase):
     pass
