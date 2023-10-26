@@ -17,7 +17,7 @@ gas_stations = [
       "diesel": True,
       "state": "Táchira",
       "city": "San Cristóbal",
-      "neighborhood_name": ""
+      "neighborhood_name": "Barrio Obrero"
   },
   {
       "name": "Estacion de Servicio Ana even",
@@ -37,7 +37,7 @@ gas_stations = [
       "diesel": True,  
       "state": "Táchira",
       "city": "San Cristóbal",
-      "neighborhood_name": ""
+      "neighborhood_name": "Barrio Obrero"
   },
   {
       "name": "Estación De Servicio Rodelca",
@@ -47,7 +47,7 @@ gas_stations = [
       "diesel": True,  
       "state": "Táchira",
       "city": "San Cristóbal",
-      "neighborhood_name": ""
+      "neighborhood_name": "Pueblo Nuevo"
   },
   {
       "name": "E/S PDV La Esperanza.",

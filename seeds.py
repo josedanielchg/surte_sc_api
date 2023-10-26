@@ -5,8 +5,8 @@ import models
 def seed_db(db: Session):
     if db.query(models.User).count() == 0:
         # Seeding Users
-        user1 = models.User(email="john.doe@example.com", password="securepassword")
-        user2 = models.User(email="jane.smith@example.com", password="anothersecurepassword")
+        user1 = models.User(username="john", email="john.doe@example.com", password="securepassword")
+        user2 = models.User(username="jane", email="jane.smith@example.com", password="anothersecurepassword")
         
         db.add(user1)
         db.add(user2)
@@ -42,6 +42,8 @@ def seed_db(db: Session):
                 name=station["name"],
                 image_path=station["image"],
                 diesel=station["diesel"],
+                latitude=station['latitude'],
+                longitude=station['longitude'],
                 neighborhood_id=neighborhood.id
             )
             db.add(gas_station)

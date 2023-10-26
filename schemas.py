@@ -6,10 +6,12 @@ from datetime import datetime
 # User Models
 class UserBase(BaseModel):
     email: str
+    username: str
     password: str
 
 class UserCreate(UserBase):
     email: EmailStr
+    username: str
     password: str
 
 class User(UserBase):
@@ -20,11 +22,11 @@ class User(UserBase):
 class UserOut(BaseModel):
     id: int
     email: EmailStr
+    username: str
     created_at: datetime
 
     class Config:
         from_attributes  = True
-
 
 # Neighborhood Models
 class NeighborhoodBase(BaseModel):

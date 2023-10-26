@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Integer, String, TIMESTAMP, BOOLEAN, Enum as SQLEnum, ForeignKey, DateTime
+from sqlalchemy import Boolean, Column, Integer, Float, String, TIMESTAMP, BOOLEAN, Enum as SQLEnum, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from database import Base
 from enum import Enum
@@ -9,6 +9,7 @@ class User(Base):
     __tablename__ = 'users'
     
     id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(50))
     email = Column(String(50), unique=True)
     password = Column(String(150))
     created_at = Column(TIMESTAMP, default=datetime.datetime.utcnow)
@@ -35,6 +36,8 @@ class GasStation(Base):
     name = Column(String(45), unique=True)
     image_path = Column(String(255))
     diesel = Column(BOOLEAN)
+    latitude = Column(Float)
+    longitude = Column(Float)
     created_at = Column(TIMESTAMP, default=datetime.datetime.utcnow)
     updated_at = Column(TIMESTAMP, default=datetime.datetime.utcnow, onupdate=datetime.datetime.utcnow)
     neighborhood_id = Column(Integer, ForeignKey('neighborhoods.id'))
