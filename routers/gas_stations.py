@@ -56,4 +56,8 @@ def get_gas_station_by_id(station_id: int, db: Session = Depends(get_db), user_i
         .first()
     )
 
+    if gas_station.latest_report:
+        approx_vehicle = gas_station.latest_report.approx_vehicle
+        gas_station.estimated_time = approx_vehicle * TIME_BY_VEHICLE
+    
     return gas_station
