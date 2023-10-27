@@ -9,13 +9,21 @@ router = APIRouter()
 TIME_BY_VEHICLE = 3
 
 @router.get('/gas_stations/')
-def get_gas_stations(db: Session = Depends(get_db), user_id: str = Depends(oauth2.get_current_user)):
-    gas_stations = (
-        db.query(models.GasStation)
-        .options(joinedload(models.GasStation.neighborhood))  # Carga relacionada con Neighborhood
-        .options(joinedload(models.GasStation.gas_supplies))  # Carga relacionada con GasSuply
-        .all()
+def get_gas_stations(
+    db: Session = Depends(get_db),
+    user_id: str = Depends(oauth2.get_current_user),
+    neighborhood_name: Optional[str] = None  # Añadimos un nuevo parámetro para el filtro
+):
+    # Si neighborhood_name no es None, filtramos por ese valor. De lo contrario, traemos todos.
+    query = db.query(models.GasStation).options(
+        joinedload(models.GasStation.neighborhood),  # Carga relacionada con Neighborhood
+        joinedload(models.GasStation.gas_supplies)   # Carga relacionada con GasSuply
     )
+    
+    if neighborhood_name:
+        query = query.join(models.Neighborhood).filter(models.Neighborhood.name.ilike(f"%{neighborhood_name}%"))
+
+    gas_stations = query.all()
 
     # Para cada estación de gasolina, obtener el último UserReport relacionado
     for station in gas_stations:
@@ -26,7 +34,7 @@ def get_gas_stations(db: Session = Depends(get_db), user_id: str = Depends(oauth
             .first()
         )
 
-    # set time stimated 
+    # Setear el tiempo estimado
     for station in gas_stations:
         if station.latest_report:
             approx_vehicle = station.latest_report.approx_vehicle

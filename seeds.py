@@ -7,9 +7,11 @@ def seed_db(db: Session):
         # Seeding Users
         user1 = models.User(username="john", email="john.doe@example.com", password="securepassword")
         user2 = models.User(username="jane", email="jane.smith@example.com", password="anothersecurepassword")
+        user3 = models.User(username="admin", email="admin@example.com", password="12345678")
         
         db.add(user1)
         db.add(user2)
+        db.add(user3)
         
         # Seeding other models...
         # neighborhood1 = models.Neighborhood(...)
