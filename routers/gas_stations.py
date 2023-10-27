@@ -14,10 +14,9 @@ def get_gas_stations(
     user_id: str = Depends(oauth2.get_current_user),
     neighborhood_name: Optional[str] = None  # Añadimos un nuevo parámetro para el filtro
 ):
-    # Si neighborhood_name no es None, filtramos por ese valor. De lo contrario, traemos todos.
     query = db.query(models.GasStation).options(
-        joinedload(models.GasStation.neighborhood),  # Carga relacionada con Neighborhood
-        joinedload(models.GasStation.gas_supplies)   # Carga relacionada con GasSuply
+        joinedload(models.GasStation.neighborhood),
+        joinedload(models.GasStation.gas_supplies)
     )
     
     if neighborhood_name:
@@ -25,7 +24,6 @@ def get_gas_stations(
 
     gas_stations = query.all()
 
-    # Para cada estación de gasolina, obtener el último UserReport relacionado
     for station in gas_stations:
         station.latest_report = (
             db.query(models.UserReports)
@@ -34,7 +32,6 @@ def get_gas_stations(
             .first()
         )
 
-    # Setear el tiempo estimado
     for station in gas_stations:
         if station.latest_report:
             approx_vehicle = station.latest_report.approx_vehicle
