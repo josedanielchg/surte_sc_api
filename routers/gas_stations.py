@@ -6,6 +6,8 @@ from typing import Optional, List
 
 router = APIRouter()
 
+TIME_BY_VEHICLE = 3
+
 @router.get('/gas_stations/')
 def get_gas_stations(db: Session = Depends(get_db), user_id: str = Depends(oauth2.get_current_user)):
     gas_stations = (
@@ -23,6 +25,12 @@ def get_gas_stations(db: Session = Depends(get_db), user_id: str = Depends(oauth
             .order_by(models.UserReports.created_at.desc())
             .first()
         )
+
+    # set time stimated 
+    for station in gas_stations:
+        if station.latest_report:
+            approx_vehicle = station.latest_report.approx_vehicle
+            station.estimated_time = approx_vehicle * TIME_BY_VEHICLE
 
     return gas_stations
 
